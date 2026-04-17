@@ -81,14 +81,39 @@ def generate_pattern():
     #
     #           # TODO: (Optional) Vary the scale using cmds.scale().
 
-    pass  # Remove this line once you add your code.
-
-
-# ---------------------------------------------------------------------------
-# Run the generator
-# ---------------------------------------------------------------------------
-generate_pattern()
-
-# Frame everything in the viewport.
+import maya.cmds as cmds
+#clears scene
+cmds.file(new=True, force=True)
+#Defining the function.
+def generate_pattern(grid_rows, grid_cols, spacing):
+    #checks for each position whether the row and column numbers are even or odd so the code can treat them differently.
+    for row in range(grid_rows):
+        is_even_row = row % 2 == 0
+        for col in range(grid_cols):
+            is_even_col = col % 2 == 0
+    #This section of code creates a cube if the row is even, names it, and moves it. 
+            if is_even_row:
+                cube_x = col * spacing
+                cube_z = row * spacing
+                cubename = f"cube{row}_{col}"
+                cmds.polyCube(name="cube")
+                cmds.move(13, 0, 10, "cube")
+       #This section of code creates a cylinder if the column is even, names it, and moves it. 
+            elif is_even_col:
+                cylinder_x = col * spacing
+                cylinder_z = row * spacing
+                cylindername = f"cylinder{row}_{col}"
+                cmds.polyCylinder(name="cylinder")
+                cmds.move(10, 0, 5, "cylinder")
+       #This section of code creates a sphere if neither the row or column is even. It names it, and moves it. 
+            else:
+                sphere_x = col * spacing
+                sphere_z = row * spacing
+                spherename = f"sphere{row}_{col}"
+                cmds.polySphere(name="sphere")
+                cmds.move(6, 0, 5, "sphere")
+#This generates the function that we set with certain perameters.                 
+generate_pattern(7,7,5)
+#Fits the scene into the viewport)
 cmds.viewFit(allObjects=True)
 print("Pattern generated successfully!")
